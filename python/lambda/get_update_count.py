@@ -4,7 +4,7 @@ import json
 def lambda_handler(event, context):
     # Create a DynamoDB resource
     dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table('visitors')
+    table = dynamodb.Table('resume_visitors')
 
     if event['httpMethod'] == 'GET':
         # Retrieve the item from DynamoDB
@@ -22,5 +22,5 @@ def lambda_handler(event, context):
         
         return {
             'statusCode': 200,
-            'body': json.dumps({'Total Views': views_count})
+            'body': json.dumps({'Total Views': int(views_count)})
         }

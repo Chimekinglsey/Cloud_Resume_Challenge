@@ -1,0 +1,5 @@
+# test event for lambda get_update_count function
+
+{
+  "httpMethod": "GET"
+}
