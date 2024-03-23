@@ -45,6 +45,24 @@ nav ul li a:hover {
     margin: 0 auto;
 }
 
+.visitorsCount {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 20px;
+}
+.visitorsCount p {
+    border-radius: 5px;
+    background: lightgrey;
+    color: #333;
+    border: 2px solid #666;
+    padding: 10px;
+}
+
+.visitorsCount p:hover {
+    background-color: rgb(171, 168, 168);
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -140,6 +158,24 @@ section h2 {
     justify-content: center;
     text-align: left;
 }
+
+.back-to-top {
+    display: none;
+    position: fixed;
+    bottom: 200px;
+    right: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 100;
+}
+
+.back-to-top i {
+    border-radius: 50%;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+}
+
 footer {
     background-color: #333;
     color: #fff;
