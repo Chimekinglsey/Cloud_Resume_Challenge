@@ -23,17 +23,19 @@ $(document).ready(function(){
 
     // update #visitorsCount from api
     let updateCount = () => {
-        let url = "https://rq22mx5cq3.execute-api.us-east-1.amazonaws.com/prod/views";
+        let url = "https://d7jvzrwts2.execute-api.us-east-1.amazonaws.com/Prod/views";
     
         $.ajax({
             method: 'GET',
             url: url,
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+                // 'Access-Control-Allow-Origin': '*', // Required for CORS support to work
             },
             success: function(data) {
-                $('#visitorsCount').text(data['views']);
+                let views = data['views']
+                $('#visitorsCount').text(views);
+                console.log(views)
             },
             error: function(err){
                 console.log(err)

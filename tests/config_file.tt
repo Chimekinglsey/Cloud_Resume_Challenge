@@ -1,0 +1,57 @@
+# working template for hosted zone, s3, acm and cloudfront distribution
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS SAM template for chime.com.ng website infrastructure
+
+Resources:
+  StaticBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: chime-resume-iac-bucket
+
+  # CloudFrontDistribution:
+  #   Type: AWS::CloudFront::Distribution
+  #   Properties:
+  #     DistributionConfig:
+  #       Origins:
+  #         - Id: S3Origin
+  #           DomainName: !GetAtt StaticBucket.DomainName
+  #           S3OriginConfig:
+  #             OriginAccessIdentity: ''
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true  # Add the missing 'Enabled' property
+        Origins:
+          - Id: S3Origin  # Assuming your S3 bucket origin has this ID
+            DomainName: !GetAtt StaticBucket.DomainName
+            S3OriginConfig:
+              OriginAccessIdentity: ''  # You may need to create an OAI if required
+        DefaultCacheBehavior:  # Add the missing 'DefaultCacheBehavior' property
+          TargetOriginId: S3Origin  # Assuming your S3 bucket origin has this ID
+          ViewerProtocolPolicy: redirect-to-https
+          ForwardedValues:
+            QueryString: true
+
+  HostedZone:
+    Type: AWS::Route53::HostedZone
+    Properties:
+      Name: chime.com.ng
+
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: chime.com.ng
+      DomainValidationOptions:
+        - DomainName: chime.com.ng
+          HostedZoneId: !Ref HostedZone
+
+Outputs:
+  StaticBucketOutput:
+    Description: URL of the static S3 bucket
+    Value: !GetAtt StaticBucket.WebsiteURL
+
+  CloudFrontDomainOutput:
+    Description: Domain name of the CloudFront distribution
+    Value: !GetAtt CloudFrontDistribution.DomainName

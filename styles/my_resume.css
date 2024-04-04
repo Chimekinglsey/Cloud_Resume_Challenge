@@ -45,23 +45,6 @@ nav ul li a:hover {
     margin: 0 auto;
 }
 
-.visitorsCount {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-top: 20px;
-}
-.visitorsCount p {
-    border-radius: 5px;
-    background: lightgrey;
-    color: #333;
-    border: 2px solid #666;
-    padding: 10px;
-}
-
-.visitorsCount p:hover {
-    background-color: rgb(171, 168, 168);
-}
 
 .container {
     max-width: 1200px;
