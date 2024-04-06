@@ -6,7 +6,7 @@ Resources:
   StaticBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: chime-resume-iac-bucket
+      BucketName: chime-resume-iac-bkt
       PublicAccessBlockConfiguration:
         BlockPublicAcls: false
         BlockPublicPolicy: false
@@ -103,13 +103,13 @@ Resources:
       DomainValidationOptions:
         - DomainName: "*.chime.com.ng"
           HostedZoneId: !Ref HostedZone
-      ValidationMethod: DNS
+      # ValidationMethod: DNS # Uncomment this line to use DNS validation. Default is EMAIL for faster setup 
     
   ChimeDotComDotNgCertificate:
     Type: 'AWS::CertificateManager::Certificate'
     Properties:
       DomainName: chime.com.ng
-      ValidationMethod: DNS
+      # ValidationMethod: DNS # Uncomment this line to use DNS validation. Default is EMAIL for faster setup
 
   DistributionDNSRecord:
     Type: AWS::Route53::RecordSet
