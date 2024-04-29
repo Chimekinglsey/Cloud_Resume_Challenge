@@ -30,7 +30,7 @@ jobs:
       run: sam local invoke --no-event
 
     - name: Deploy SAM application
-      run: sam deploy --stack-name cloud-resume --capabilities CAPABILITY_IAM --region us-east-1
+      run: sam deploy --stack-name cloud-resume --capabilities CAPABILITY_IAM --region us-east-1 --s3-bucket chime-resume-iac-bkt
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
