@@ -21,8 +21,8 @@ jobs:
     - name: Install dependencies
       run: pip install aws-sam-cli
     
-    - name: Build SAM application
-      run: sam build --template-file /home/runner/work/Cloud_Resume_Challenge/cloud-resume/template.yml
+    - name: Build SAM file
+      run: sam build --template-file ./cloud-resume/template.yml
 
 
 
