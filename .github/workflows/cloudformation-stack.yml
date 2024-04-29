@@ -20,7 +20,10 @@ jobs:
 
     - name: Install dependencies
       run: pip install aws-sam-cli
-
+    
+    - name: Step into the dir with template
+      run: cd cloud-resume
+      
     - name: Build SAM application
       run: sam build
 
