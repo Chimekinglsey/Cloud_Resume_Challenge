@@ -1,8 +1,0 @@
-# test event for lambda get_update_count function
-
-{
-  "httpMethod": "GET"
-}
-# import login_required from django.contrib.auth.decorators
-from django.contrib.auth.decorators import login_required
-issubclass()
