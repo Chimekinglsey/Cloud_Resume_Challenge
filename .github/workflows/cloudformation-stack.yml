@@ -22,7 +22,7 @@ jobs:
       run: pip install aws-sam-cli
     
     - name: Build SAM file
-      run: sam build --template-file ./cloud-resume/template.yml
+      run: sam build --template-file ./cloud-resume/template.yaml
 
 
 
