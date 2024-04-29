@@ -38,7 +38,7 @@ $(document).ready(function(){
                 console.log(views)
             },
             error: function(err){
-                console.log(err)
+                console.error(err)
             }
         });
     };
