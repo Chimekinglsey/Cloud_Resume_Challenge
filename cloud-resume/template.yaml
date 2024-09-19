@@ -6,7 +6,7 @@ Resources:
   StaticBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: chime-resume-iac-bkt
+      BucketName: chime-resume-bkt-store
       PublicAccessBlockConfiguration:
         BlockPublicAcls: false
         BlockPublicPolicy: false
@@ -27,74 +27,83 @@ Resources:
             Action: 's3:GetObject'
             Resource: !Join ['', ['arn:aws:s3:::', !Ref StaticBucket, '/*']]
 
-  CloudFrontDistribution:
-    Type: AWS::CloudFront::Distribution
-    Properties:
-      DistributionConfig:
-        Enabled: true
-        Aliases:
-          - resume.chime.com.ng
-        DefaultRootObject: my_resume.html
-        HttpVersion: http2
-        IPV6Enabled: true
-        Origins:
-          - DomainName: !GetAtt StaticBucket.RegionalDomainName
-            Id: S3Origin
-            S3OriginConfig:
-              OriginAccessIdentity: ""
-        DefaultCacheBehavior:
-          AllowedMethods:
-            - GET
-            - HEAD
-            - OPTIONS
-          Compress: true
-          DefaultTTL: 86400
-          ForwardedValues:
-            QueryString: false
-            Cookies:
-              Forward: none
-          TargetOriginId: S3Origin
-          ViewerProtocolPolicy: redirect-to-https
-        ViewerCertificate:
-          AcmCertificateArn: !Ref WildcardCertificate
-          SslSupportMethod: sni-only
+  # CloudFrontDistribution:
+  #   Type: AWS::CloudFront::Distribution
+  #   Properties:
+  #     DistributionConfig:
+  #       Enabled: true
+  #       Aliases:
+  #         - resume.chime.com.ng
+  #       DefaultRootObject: my_resume.html
+  #       HttpVersion: http2
+  #       IPV6Enabled: true
+  #       Origins:
+  #         - DomainName: !GetAtt StaticBucket.RegionalDomainName
+  #           Id: S3Origin
+  #           S3OriginConfig:
+  #             OriginAccessIdentity: ""
+  #       DefaultCacheBehavior:
+  #         AllowedMethods:
+  #           - GET
+  #           - HEAD
+  #           - OPTIONS
+  #         Compress: true
+  #         DefaultTTL: 86400
+  #         ForwardedValues:
+  #           QueryString: false
+  #           Cookies:
+  #             Forward: none
+  #         TargetOriginId: S3Origin
+  #         ViewerProtocolPolicy: redirect-to-https
+  #       ViewerCertificate:
+  #         AcmCertificateArn: !Ref WildcardCertificate
+  #         SslSupportMethod: sni-only
 
-  ChimeCloudFrontDistribution:
-    Type: AWS::CloudFront::Distribution
-    Properties:
-      DistributionConfig:
-        Enabled: true
-        Aliases:
-          - chime.com.ng
-        DefaultRootObject: my_resume.html
-        HttpVersion: http2
-        IPV6Enabled: true
-        Origins:
-          - DomainName: !GetAtt StaticBucket.RegionalDomainName
-            Id: S3Origin
-            S3OriginConfig:
-              OriginAccessIdentity: ""
-        DefaultCacheBehavior:
-          AllowedMethods:
-            - GET
-            - HEAD
-            - OPTIONS
-          Compress: true
-          DefaultTTL: 86400
-          ForwardedValues:
-            QueryString: false
-            Cookies:
-              Forward: none
-          TargetOriginId: S3Origin
-          ViewerProtocolPolicy: redirect-to-https
-        ViewerCertificate:
-          AcmCertificateArn: !Ref ChimeDotComDotNgCertificate
-          SslSupportMethod: sni-only
+  # ChimeCloudFrontDistribution:
+  #   Type: AWS::CloudFront::Distribution
+  #   Properties:
+  #     DistributionConfig:
+  #       Enabled: true
+  #       Aliases:
+  #         - chime.com.ng
+  #       DefaultRootObject: my_resume.html
+  #       HttpVersion: http2
+  #       IPV6Enabled: true
+  #       Origins:
+  #         - DomainName: !GetAtt StaticBucket.RegionalDomainName
+  #           Id: S3Origin
+  #           S3OriginConfig:
+  #             OriginAccessIdentity: ""
+  #       DefaultCacheBehavior:
+  #         AllowedMethods:
+  #           - GET
+  #           - HEAD
+  #           - OPTIONS
+  #         Compress: true
+  #         DefaultTTL: 86400
+  #         ForwardedValues:
+  #           QueryString: false
+  #           Cookies:
+  #             Forward: none
+  #         TargetOriginId: S3Origin
+  #         ViewerProtocolPolicy: redirect-to-https
+  #       ViewerCertificate:
+  #         AcmCertificateArn: !Ref ChimeDotComDotNgCertificate
+  #         SslSupportMethod: sni-only
 
-  HostedZone:
-    Type: AWS::Route53::HostedZone
+  # HostedZone:
+  #   Type: AWS::Route53::HostedZone
+  #   Properties:
+  #     Name: chime.com.ng
+
+  ChimeDotComDotNgCertificate:
+    Type: 'AWS::CertificateManager::Certificate'
     Properties:
-      Name: chime.com.ng
+      DomainName: 'chime.com.ng'
+      DomainValidationOptions:
+        - DomainName: chime.com.ng
+          HostedZoneId: Z06060093L42QBDM5IVNI
+      ValidationMethod: DNS # Uncomment this line to use DNS validation. Default is EMAIL for faster setup
 
   WildcardCertificate:
     Type: AWS::CertificateManager::Certificate
@@ -102,34 +111,28 @@ Resources:
       DomainName: "*.chime.com.ng"
       DomainValidationOptions:
         - DomainName: "*.chime.com.ng"
-          HostedZoneId: !Ref HostedZone
-      # ValidationMethod: DNS # Uncomment this line to use DNS validation. Default is EMAIL for faster setup 
+          HostedZoneId: Z06060093L42QBDM5IVNI
+      ValidationMethod: DNS # Uncomment this line to use DNS validation. Default is EMAIL for faster setup 
     
-  ChimeDotComDotNgCertificate:
-    Type: 'AWS::CertificateManager::Certificate'
-    Properties:
-      DomainName: chime.com.ng
-      # ValidationMethod: DNS # Uncomment this line to use DNS validation. Default is EMAIL for faster setup
+  # DistributionDNSRecord:
+  #   Type: AWS::Route53::RecordSet
+  #   Properties:
+  #     HostedZoneId: Z06060093L42QBDM5IVNI  # Create a hosted zone in Route 53 and replace this value with the HostedZoneId
+  #     Name: chime.com.ng
+  #     Type: A
+  #     AliasTarget:
+  #       DNSName: !GetAtt ChimeCloudFrontDistribution.DomainName
+  #       HostedZoneId: Z06060093L42QBDM5IVNI # CloudFront HostedZoneId
 
-  DistributionDNSRecord:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneId: !Ref HostedZone
-      Name: chime.com.ng
-      Type: A
-      AliasTarget:
-        DNSName: !GetAtt ChimeCloudFrontDistribution.DomainName
-        HostedZoneId: Z2FDTNDATAQYW2 # CloudFront HostedZoneId
-  
-  ResumeDNSRecord:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneId: !Ref HostedZone
-      Name: resume.chime.com.ng
-      Type: A
-      AliasTarget:
-        DNSName: !GetAtt CloudFrontDistribution.DomainName
-        HostedZoneId: Z2FDTNDATAQYW2 # CloudFront HostedZoneId
+  # ResumeDNSRecord:
+  #   Type: AWS::Route53::RecordSet
+  #   Properties:
+  #     HostedZoneId: Z06060093L42QBDM5IVNI  # Create a hosted zone in Route 53 and replace this value with the HostedZoneId
+  #     Name: resume.chime.com.ng
+  #     Type: A
+  #     AliasTarget:
+  #       DNSName: !GetAtt CloudFrontDistribution.DomainName
+  #       HostedZoneId: Z06060093L42QBDM5IVNI # CloudFront HostedZoneId
 
 
 # Backend resources - Lambda function, DynamoDB table, API Gateway

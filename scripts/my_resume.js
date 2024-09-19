@@ -23,7 +23,7 @@ $(document).ready(function(){
 
     // update #visitorsCount from api
     let updateCount = () => {
-        let url = "https://s38mqz203e.execute-api.us-east-1.amazonaws.com/Prod/views";
+        let url = "https://yq74c6e5yc.execute-api.us-east-1.amazonaws.com/Prod/views";
     
         $.ajax({
             method: 'GET',

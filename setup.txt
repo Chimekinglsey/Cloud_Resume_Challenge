@@ -1,0 +1,2 @@
+After cloning the repository, follow the following:
+1. pip install aws-sam-cli # Ensure that python is installed [3.7+, 3.12 is used by default]
